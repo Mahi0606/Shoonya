@@ -2,9 +2,14 @@
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
+    './public/index.html',
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundColor: {
+        darkCyan: '#004d40',
+      },  
+    },
   },
   plugins: [],
 }

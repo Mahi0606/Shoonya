@@ -1,9 +1,15 @@
-import './App.css';
+import Header from "./components/Header";
+import ImageBannerContainer from "./components/ImageBannerContainer";
+import Body from "./components/Body";
+import Footer from "./components/Footer";
 
 function App() {
   return (
-    <div className="text-3xl font-bold text-yellow-300">
-      Let's build Shoonya
+    <div className='app'>
+      <Header />
+      <ImageBannerContainer />
+      <Body />
+      <Footer />
     </div>
   );
 }

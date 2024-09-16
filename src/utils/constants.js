@@ -1,0 +1,1 @@
+export const LOGO_URL = "https://i.im.ge/2024/09/14/fHnyA6.Shoonya-Logo-4.png"
