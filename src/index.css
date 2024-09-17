@@ -6,8 +6,13 @@ body {
   font-family: "Poppins", sans-serif;
 }
 
-.item-card {
-  min-width: 440px;  /* Ensure each card has a fixed width */
-  max-width: 440px;  /* Optional: To prevent cards from resizing */
-  flex-shrink: 0;    /* Prevent shrinking */
+
+/* In your global CSS file or a CSS module */
+.scrollbar-hidden {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer and Edge */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
 }

@@ -1,16 +1,29 @@
-import Header from "./components/Header";
-import ImageBannerContainer from "./components/ImageBannerContainer";
-import Body from "./components/Body";
-import Footer from "./components/Footer";
+import { createBrowserRouter } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
+import Home from "./components/Home";
+import SignIn from "./components/SignIn";
+import SignUp from './components/SignUp';
 
 function App() {
+  const appRouter = createBrowserRouter([
+    {
+      path: "/",
+      element: <Home />
+    },
+    {
+      path: "/sign-in",
+      element: <SignIn />
+    },
+    {
+      path: "sign-up",
+      element: <SignUp />
+    }
+  ])
+
   return (
-    <div className='app'>
-      <Header />
-      <ImageBannerContainer />
-      <Body />
-      <Footer />
-    </div>
+    <>
+      <RouterProvider router={appRouter} />
+    </>
   );
 }
 

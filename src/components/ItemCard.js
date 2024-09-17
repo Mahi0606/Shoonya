@@ -6,12 +6,13 @@ const ItemCard = (props) => {
   const { imageUrl, productName, rating, description, price } = props;
 
   return (
-    <div className="item-card flex flex-col relative w-[440px] h-[892px] pt-[5px] pl-[12px] pb-[30px] pr-[0px] justify-between">
+    <div className="item-card flex flex-col min-w-[440px] pt-[5px] pl-[12px] pb-[30px] justify-between w-full sm:w-60 md:w-72 lg:w-80">
       <div>
         <img
-          className="w-[429px] h-[536px] rounded-3xl"
+          className="h-[536px] w-full object-cover rounded-3xl"
           alt="item-image"
-          src={imageUrl}></img>
+          src={imageUrl}
+        ></img>
         <div className="flex flex-col justify-between list-none">
           <li className="item-name font-medium text-lg my-3">{productName}</li>
           <li className="item-price my-1">Starting Rs. {price}</li>
