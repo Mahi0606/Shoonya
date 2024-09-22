@@ -16,3 +16,24 @@ body {
 .scrollbar-hidden::-webkit-scrollbar {
   display: none; /* Safari and Chrome */
 }
+
+.paper-fold {
+  position: relative;
+  overflow: hidden;
+}
+
+.paper-fold::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: #fff;
+  transform-origin: top right;
+  transform: rotate(0deg);
+  transition: transform 0.6s ease;
+  box-shadow: -8px -8px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  clip-path: polygon(100% 0, 0 0, 100% 100%);
+}

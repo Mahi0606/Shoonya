@@ -1,35 +1,58 @@
 import React from "react";
-import StarRating from "./propertyComponents/StarRating";
-import DecodeDescription from "./propertyComponents/DecodeDescription";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import StarRating from "../utils/StarRating";
+import DecodeDescription from "../utils/DecodeDescription";
+
+// Animation variants for sliding in from the left
+const cardVariants = {
+  hidden: { opacity: 0, x: -80 },
+  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeInOut" } }
+};
 
 const ItemCard = (props) => {
-  const { imageUrl, productName, rating, description, price } = props;
+  const { id, imageUrl, productName, rating, description, price, index } = props;
 
   return (
-    <div className="item-card flex flex-col min-w-[440px] pt-[5px] pl-[12px] pb-[30px] justify-between w-full sm:w-60 md:w-72 lg:w-80">
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.4 }}
+      variants={cardVariants}
+      transition={{ delay: index * 0.1 }} // Stagger effect
+      className="item-card flex flex-col min-w-[280px] sm:min-w-[340px] md:min-w-[360px] lg:min-w-[380px] xl:min-w-[400px] p-4 justify-between"
+    >
       <div>
         <img
-          className="h-[536px] w-full object-cover rounded-3xl"
+          className="h-[300px] sm:h-[360px] md:h-[420px] lg:h-[480px] xl:h-[536px] w-full object-cover rounded-3xl"
           alt="item-image"
           src={imageUrl}
-        ></img>
-        <div className="flex flex-col justify-between list-none">
-          <li className="item-name font-medium text-lg my-3">{productName}</li>
-          <li className="item-price my-1">Starting Rs. {price}</li>
+        />
+        <div className="flex flex-col mt-4 space-y-2 list-none">
+          <li className="item-name font-medium text-md sm:text-lg md:text-xl">
+            {productName}
+          </li>
+          <li className="item-price text-sm sm:text-md md:text-lg">
+            Starting Rs. {price}
+          </li>
           <li>
             {rating != null ? <StarRating rating={Math.round(rating)} /> : null}
           </li>
-          <li className="font-light text-lg">
+          <li className="font-light text-sm sm:text-md md:text-lg">
             <DecodeDescription description={description} />
           </li>
         </div>
       </div>
-      <button
-        type="button"
-        className="w-[154px] h-[47px] bg-transparent hover:bg-orange-900 text-orange-900 text-xl font-light hover:text-white border border-orange-900 hover:border-transparent rounded-full">
-        Shop Now
-      </button>
-    </div>
+
+      <Link to={`/buy-page/${id}`} className="mt-4">
+        <button
+          type="button"
+          className="w-full sm:w-[154px] h-[40px] sm:h-[47px] bg-transparent hover:bg-orange-900 text-orange-900 text-sm sm:text-lg font-light hover:text-white border border-orange-900 hover:border-transparent rounded-full"
+        >
+          Shop Now
+        </button>
+      </Link>
+    </motion.div>
   );
 };
 

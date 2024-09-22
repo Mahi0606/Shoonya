@@ -1,28 +1,46 @@
-import React, { useState } from 'react';
-import Header from './Header';
+import React, { useState } from "react";
+import Header from "./Header";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../utils/firebase";
 
 const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (email === '' || password === '') {
-      setError('Please fill in all fields');
+    if (email === "" || password === "") {
+      setError("Please fill in all fields");
       return;
     }
     // Need to Handle Sign In Logic
-    setError(''); // Clear error on successful submit
-    console.log('Signing in with', email, password);
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        // ...
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setError(errorCode + "-" + errorMessage);
+        return;
+      });
+
+    setError(""); // Clear error on successful submit
+    console.log("Signing in with", email, password);
   };
 
   return (
     <>
-      <Header />
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Header fixed1={true} />
+      <div className="flex items-center justify-center min-h-screen">
         <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm">
-          <h2 className="text-2xl font-bold mb-6 text-center text-pink-800">Sign In</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center text-pink-800">
+            Sign In
+          </h2>
           {error && <div className="mb-4 text-red-500">{error}</div>}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
@@ -53,12 +71,11 @@ const SignIn = () => {
             </div>
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-pink-800 text-white font-semibold rounded-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500"
-            >
+              className="w-full py-2 px-4 bg-pink-800 text-white font-semibold rounded-md hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500">
               Sign In
             </button>
             <div className="mt-4 text-center text-gray-600">
-              Don't have an account?{' '}
+              Don't have an account?{" "}
               <a href="/sign-up" className="text-pink-800 hover:underline">
                 Sign Up
               </a>
