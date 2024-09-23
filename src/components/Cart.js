@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "./Header";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faIndianRupee, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
@@ -21,20 +20,21 @@ const Cart = () => {
       quantity: 1,
     },
     {
-        id: 1,
+        id: 3,
         name: "Product 1",
         imageUrl: "https://via.placeholder.com/150",
         price: 25.0,
         quantity: 2,
       },
       {
-        id: 2,
+        id: 4,
         name: "Product 2",
         imageUrl: "https://via.placeholder.com/150",
         price: 15.0,
         quantity: 1,
       },
   ];
+  
 
   const handleRemove = (id) => {
     // Logic to remove item from cart
@@ -49,7 +49,6 @@ const Cart = () => {
 
   return (
     <div>
-      <Header fixed1={true}/>
       <div className=" min-h-screen p-8 pt-32">
         <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
           <h1 className="text-3xl font-bold text-pink-800 mb-6">Your Cart</h1>

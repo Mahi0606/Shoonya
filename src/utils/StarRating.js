@@ -1,17 +1,20 @@
 import React from 'react';
-import Rating from 'react-rating';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faStar as faStarEmpty } from '@fortawesome/free-solid-svg-icons';
+import { Box } from '@mui/material';
+import Rating from '@mui/material/Rating';
+import StarIcon from '@mui/icons-material/Star';
 
-const StarRating = ({rating}) => {
+const StarRating = ({ rating }) => {
   return (
-    <div className='rating'>
+    <Box component="fieldset" mb={3} borderColor="transparent">
       <Rating
-        initialRating={rating}
-        emptySymbol={<FontAwesomeIcon icon={faStarEmpty} color="gray" />} // Empty star
-        fullSymbol={<FontAwesomeIcon icon={faStar} color="gold" />} // Full star
+        name="rating"
+        value={rating}
+        precision={1} 
+        readOnly
+        icon={<StarIcon fontSize="inherit" />}
+        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
       />
-    </div>
+    </Box>
   );
 };
 

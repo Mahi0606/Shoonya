@@ -2,11 +2,16 @@ import React from "react";
 import { motion } from "framer-motion";
 import ItemCard from "./ItemCard";
 import { filteredData } from "../utils/mockData";
+import { Link } from "react-router-dom";
 
 // Animation variants for sliding in from the left
 const sectionVariants = {
   hidden: { opacity: 0, x: -100 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.6, ease: "easeInOut" } }
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.6, ease: "easeInOut" },
+  },
 };
 
 const Body = () => {
@@ -17,8 +22,7 @@ const Body = () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.5 }}
-        variants={sectionVariants}
-      >
+        variants={sectionVariants}>
         <div className="w-full h-16 md:h-20 flex justify-center items-center">
           <h2 className="text-2xl md:text-4xl font-bold relative">
             Popular Products
@@ -42,6 +46,13 @@ const Body = () => {
               index={index} // Pass the index for staggered animation
             />
           ))}
+        </div>
+        <div className="mt-12 text-center">
+        <Link
+          to="/allProducts"
+          className="inline-block px-8 py-3 text-lg font-semibold text-orange-500 border border-orange-500 rounded-full hover:bg-orange-500 hover:text-white transition-all duration-300">
+          View All Products
+        </Link>
         </div>
       </div>
     </div>

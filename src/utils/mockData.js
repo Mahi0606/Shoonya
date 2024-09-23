@@ -3623,3 +3623,5 @@ export const filteredData = [
     updated_at: "2024-09-15T12:45:36.656Z",
   },
 ];
+
+export const allProducts = [...products, ...filteredData];

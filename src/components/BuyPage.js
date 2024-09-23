@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Header from "./Header";
 import StarRating from "../utils/StarRating";
 import DecodeDescription from "../utils/DecodeDescription";
 import { filteredData } from "../utils/mockData";
@@ -11,10 +10,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 
+
+
 const BuyPage = () => {
   const { id } = useParams();
   const item = filteredData.find((item) => item.id.toString() === id);
   const [quantity, setQuantity] = useState(1);
+
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -30,7 +32,6 @@ const BuyPage = () => {
 
   return (
     <>
-      <Header fixed1={true} />
       <div className="p-4 sm:p-6 lg:p-8 pt-28 lg:pt-28 min-h-screen">
         <div className="paper-fold p-4 sm:p-5 flex flex-col lg:flex-row justify-between bg-blue-100 rounded-lg shadow-lg w-full">
           <div className="w-full lg:basis-2/5 mb-6 lg:mb-0 relative">

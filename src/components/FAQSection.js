@@ -30,16 +30,23 @@ const FAQItem = ({ question, answer }) => {
 
 const FAQSection = () => {
   const faqs = [
-    { question: "What is the return policy?", answer: "You can return the item within 30 days." },
-    { question: "How do I track my order?", answer: "You will receive a tracking link via email." },
-    { question: "Can I cancel my order?", answer: "Yes, cancellations are allowed within 24 hours of placing the order." },
-    { question: "Do you offer international shipping?", answer: "Yes, we ship internationally with applicable charges." },
-    // Add more FAQs as needed
+    { question: "What types of sweets do you offer?", answer: "We offer a variety of sweets, including traditional Indian mithai, chocolates, and fusion desserts." },
+    { question: "Do you have sugar-free options?", answer: "Yes, we have a selection of sugar-free sweets available." },
+    { question: "What is the shelf life of your sweets?", answer: "Our sweets typically have a shelf life of 1-2 weeks, depending on the type. Please check the packaging for specific details." },
+    { question: "Can I customize my order?", answer: "Absolutely! We offer customization options for special occasions. Please contact us for more details." },
+    { question: "What payment methods do you accept?", answer: "We accept various payment methods, including credit/debit cards, UPI, and cash on delivery." },
+    { question: "Do you offer bulk orders for events?", answer: "Yes, we offer bulk orders for weddings, parties, and other events. Please reach out to us for pricing and availability." },
+    { question: "How do I store the sweets?", answer: "For best results, store the sweets in a cool, dry place. Refrigeration is recommended for some items." },
+    { question: "What is your return policy?", answer: "Due to the nature of our products, we do not accept returns. However, please contact us if you have any issues with your order." },
   ];
+  
 
   return (
-    <div className="faq-section mt-12 px-4 md:px-8 lg:px-16">
-      <h2 className="text-3xl font-bold text-gray-800 mb-8">Frequently Asked Questions</h2>
+    <div className="faq-section mt-24 px-4 md:px-8 lg:px-16">
+      <h2 className="text-3xl font-bold text-gray-800 mb-8">
+        Frequently Asked Questions
+        <span className="block h-1 w-16 md:w-24 bg-orange-500 mt-2"></span>
+      </h2>
       <div className="max-w-4xl">
         {faqs.map((faq, index) => (
           <FAQItem key={index} question={faq.question} answer={faq.answer} />
