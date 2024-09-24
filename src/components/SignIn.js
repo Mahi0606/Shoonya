@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "./Header";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/firebase";
+import { Link } from "react-router-dom";
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -14,13 +15,11 @@ const SignIn = () => {
       setError("Please fill in all fields");
       return;
     }
-    // Need to Handle Sign In Logic
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
         console.log(user);
-        // ...
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -76,9 +75,9 @@ const SignIn = () => {
             </button>
             <div className="mt-4 text-center text-gray-600">
               Don't have an account?{" "}
-              <a href="/sign-up" className="text-pink-800 hover:underline">
+              <Link to="/sign-up" className="text-pink-800 hover:underline">
                 Sign Up
-              </a>
+              </Link>
             </div>
           </form>
         </div>

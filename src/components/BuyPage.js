@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import StarRating from "../utils/StarRating";
 import DecodeDescription from "../utils/DecodeDescription";
-import { filteredData } from "../utils/mockData";
+import { allProducts } from "../utils/mockData";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faIndianRupeeSign,
@@ -10,13 +10,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 
-
-
 const BuyPage = () => {
   const { id } = useParams();
-  const item = filteredData.find((item) => item.id.toString() === id);
+  const item = allProducts.find((item) => item.id.toString() === id);
   const [quantity, setQuantity] = useState(1);
-
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -38,7 +35,11 @@ const BuyPage = () => {
             <img
               className="rounded-2xl w-full h-auto"
               alt="item-img"
-              src={item.imageUrl}
+              src={
+                item.images
+                  ? item.images[0]?.src || item.imageUrl
+                  : item.imageUrl
+              }
             />
           </div>
           <div className="product-info w-full lg:basis-1/2 flex flex-col justify-between sm:py-10 lg:pr-40">
@@ -46,14 +47,20 @@ const BuyPage = () => {
               <h1 className="font-medium text-cyan-700 text-2xl sm:text-3xl lg:text-4xl">
                 {item.title}
               </h1>
-              {item.rating_average !== null ? (
-                <StarRating rating={Math.round(item.rating_average)} />
+              {item.rating_average || item.variants[0]?.position !== null ? (
+                <StarRating rating={Math.round(item.rating_average) || item.variants[0]?.position} />
               ) : null}
               <h3 className="text-sm sm:text-lg italic">
-                <DecodeDescription description={item.description} />
+                {item.description ? (
+                  <DecodeDescription description={item.description} />
+                ) : (
+                  item.body_html && (
+                    <DecodeDescription description={item.body_html} />
+                  )
+                )}
               </h3>
               <span className="text-[16px] sm:text-[20px] italic">
-                {rupeeSign} {item.price.toFixed(2)}
+                {rupeeSign} {item.price || item.variants?.[0]?.price}
               </span>
             </div>
             <div className="pt-4 sm:pt-10 pb-4 lg:pb-10 flex items-center gap-14">
@@ -71,7 +78,7 @@ const BuyPage = () => {
                 onClick={handleIncrease}
               />
               <span className="text-[16px] sm:text-[20px]">
-                {rupeeSign} {(item.price * quantity).toFixed(2)}
+                {rupeeSign} {((item.price || item.variants?.[0]?.price) * quantity).toFixed(2)}
               </span>
             </div>
             <div>

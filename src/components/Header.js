@@ -58,8 +58,8 @@ const Header = ({ isSignedIn, user, handleSignOut }) => {
             />
             {showSearchDropdown && (
               <div className="absolute left-0 top-10 w-80 bg-white border border-gray-300 rounded-lg shadow-xl max-h-60 overflow-y-auto p-4 z-50 transition-transform transform scale-y-100 opacity-100">
-                {allProducts.length > 0 ? (
-                  allProducts.map((product) => (
+                {filteredProducts.length > 0 ? (
+                  filteredProducts.map((product) => (
                     <Link
                       to={`/buy-page/${product.id}`}
                       key={product.id}
@@ -69,7 +69,7 @@ const Header = ({ isSignedIn, user, handleSignOut }) => {
                         setShowSearchDropdown(false); // Hide the dropdown
                       }}>
                       <img
-                        src={product.images ? product.images[0]?.src || product.imageUrl : product.imageUrl}
+                        src={product.images ? product.images[0].src || product.imageUrl : product.imageUrl}
                         alt={product.title}
                         className="w-12 h-12 mr-3 rounded"
                       />
