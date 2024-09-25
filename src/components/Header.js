@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
@@ -9,12 +9,14 @@ import shoonya from "../assets/shoonya.png";
 import { Link } from "react-router-dom";
 import { allProducts } from "../utils/mockData";
 
-const Header = ({ isSignedIn, user, handleSignOut }) => {
+const Header = ({ user, handleSignOut }) => {
   const [showUserDropdown, setShowUserDropdown] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
 
+  const userDropdownRef = useRef(null);
+  const searchDropdownRef = useRef(null);
 
   const toggleUserDropdown = () => {
     setShowUserDropdown(!showUserDropdown);
@@ -30,6 +32,29 @@ const Header = ({ isSignedIn, user, handleSignOut }) => {
     setFilteredProducts(filtered);
     setShowSearchDropdown(value.length > 0);
   };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        userDropdownRef.current &&
+        !userDropdownRef.current.contains(event.target)
+      ) {
+        setShowUserDropdown(false);
+      }
+      if (
+        searchDropdownRef.current &&
+        !searchDropdownRef.current.contains(event.target)
+      ) {
+        setShowSearchDropdown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -57,7 +82,9 @@ const Header = ({ isSignedIn, user, handleSignOut }) => {
               onChange={handleSearchChange}
             />
             {showSearchDropdown && (
-              <div className="absolute left-0 top-10 w-80 bg-white border border-gray-300 rounded-lg shadow-xl max-h-60 overflow-y-auto p-4 z-50 transition-transform transform scale-y-100 opacity-100">
+              <div
+                className="absolute left-0 top-10 w-80 bg-white border border-gray-300 rounded-lg shadow-xl max-h-60 overflow-y-auto p-4 z-50 transition-transform transform scale-y-100 opacity-100"
+                ref={searchDropdownRef}>
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map((product) => (
                     <Link
@@ -69,7 +96,11 @@ const Header = ({ isSignedIn, user, handleSignOut }) => {
                         setShowSearchDropdown(false); // Hide the dropdown
                       }}>
                       <img
-                        src={product.images ? product.images[0].src || product.imageUrl : product.imageUrl}
+                        src={
+                          product.images
+                            ? product.images[0].src || product.imageUrl
+                            : product.imageUrl
+                        }
                         alt={product.title}
                         className="w-12 h-12 mr-3 rounded"
                       />
@@ -82,7 +113,7 @@ const Header = ({ isSignedIn, user, handleSignOut }) => {
               </div>
             )}
           </li>
-          {!isSignedIn ? (
+          {!user ? (
             <li className="cursor-pointer">
               <Link to="/sign-in">
                 <FontAwesomeIcon icon={faUser} fontSize={20} />
@@ -91,10 +122,11 @@ const Header = ({ isSignedIn, user, handleSignOut }) => {
           ) : (
             <li
               className="relative cursor-pointer"
-              onClick={toggleUserDropdown}>
+              onClick={toggleUserDropdown}
+              ref={userDropdownRef}>
               <FontAwesomeIcon icon={faUserCircle} fontSize={25} />
               {showUserDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg transition-transform transform scale-y-100 opacity-100">
+                <div className="absolute z-50 right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg transition-transform transform scale-y-100 opacity-100">
                   <div className="p-4">
                     <p className="font-bold text-lg">{user?.displayName}</p>
                     <p className="text-gray-600 text-sm">{user?.email}</p>

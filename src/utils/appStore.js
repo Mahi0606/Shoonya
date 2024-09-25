@@ -4,7 +4,7 @@ import userReducer from "./userSlice";
 const appStore = configureStore(
     {
         reducer: {
-            user: userReducer
+            user: userReducer,
         }
     }
 )

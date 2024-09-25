@@ -9,11 +9,15 @@ import {
   faPlusSquare,
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { useSelector } from "react-redux";
+import { db } from "../utils/firebase";
 
 const BuyPage = () => {
   const { id } = useParams();
   const item = allProducts.find((item) => item.id.toString() === id);
   const [quantity, setQuantity] = useState(1);
+  const user = useSelector((state) => state.user.user);
 
   const handleIncrease = () => {
     setQuantity(quantity + 1);
@@ -22,6 +26,43 @@ const BuyPage = () => {
   const handleDecrease = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    if (!user) {
+      alert("Please log in to add items to the cart.");
+      return;
+    }
+
+    try {
+      const cartRef = doc(db, "carts", user.uid); // Reference to user's cart
+      const cartSnap = await getDoc(cartRef);
+
+      let cartItems = [];
+      if (cartSnap.exists()) {
+        cartItems = cartSnap.data().items;
+      }
+
+      // Check if item already exists in cart
+      const existingItemIndex = cartItems.findIndex((i) => i.id === item.id);
+      if (existingItemIndex !== -1) {
+        cartItems[existingItemIndex].quantity += quantity;
+      } else {
+        cartItems.push({
+          id: item.id,
+          name: item.title,
+          price: item.price || item.variants?.[0]?.price,
+          quantity,
+          imageUrl: item.images?.[0]?.src || item.imageUrl,
+        });
+      }
+
+      // Save the updated cart in Firestore
+      await setDoc(cartRef, { items: cartItems });
+      console.log("Cart updated successfully!");
+    } catch (error) {
+      console.error("Error updating cart:", error);
     }
   };
 
@@ -36,9 +77,9 @@ const BuyPage = () => {
               className="rounded-2xl w-full h-auto"
               alt="item-img"
               src={
-                item.images
-                  ? item.images[0]?.src || item.imageUrl
-                  : item.imageUrl
+                item.images?.length > 0
+                  ? item.images[0].src || item.imageUrl
+                  : item.imageUrl || "default-image-url"
               }
             />
           </div>
@@ -47,8 +88,13 @@ const BuyPage = () => {
               <h1 className="font-medium text-cyan-700 text-2xl sm:text-3xl lg:text-4xl">
                 {item.title}
               </h1>
-              {item.rating_average || item.variants[0]?.position !== null ? (
-                <StarRating rating={Math.round(item.rating_average) || item.variants[0]?.position} />
+              {item.rating_average || item.variants?.[0]?.position ? (
+                <StarRating
+                  rating={
+                    Math.round(item.rating_average) ||
+                    item.variants[0]?.position
+                  }
+                />
               ) : null}
               <h3 className="text-sm sm:text-lg italic">
                 {item.description ? (
@@ -78,13 +124,15 @@ const BuyPage = () => {
                 onClick={handleIncrease}
               />
               <span className="text-[16px] sm:text-[20px]">
-                {rupeeSign} {((item.price || item.variants?.[0]?.price) * quantity).toFixed(2)}
+                {rupeeSign}{" "}
+                {(item.price || item.variants?.[0]?.price) * quantity}
               </span>
             </div>
             <div>
               <button
                 type="button"
-                className="w-full sm:w-[154px] h-[47px] bg-transparent hover:bg-orange-900 text-orange-900 text-xl font-light hover:text-white border border-orange-900 hover:border-transparent rounded-full transition-transform transform hover:scale-105">
+                className="w-full sm:w-[154px] h-[47px] bg-transparent hover:bg-orange-900 text-orange-900 text-xl font-light hover:text-white border border-orange-900 hover:border-transparent rounded-full transition-transform transform hover:scale-105"
+                onClick={handleAddToCart}>
                 Add to Cart
               </button>
             </div>
