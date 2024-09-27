@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -43,25 +44,24 @@ const Footer = () => {
               Quick Links
             </p>
             <div className="mt-5 space-y-2">
-              <p className="text-gray-600 hover:text-blue-500 cursor-pointer">
-                Home
-              </p>
-              <p className="text-gray-600 hover:text-blue-500 cursor-pointer">
-                Who We Are
-              </p>
+              <Link to={'https://rishihood.edu.in/'}>
+                <p className="text-gray-600 hover:text-blue-500 cursor-pointer">
+                  Incubated with
+                </p>
+              </Link>
             </div>
           </div>
           <div>
             <p className="font-semibold text-gray-800 dark:text-white">
               Industries
             </p>
+            
             <div className="mt-5 space-y-2">
-              <p className="text-gray-600 hover:text-blue-500 cursor-pointer">
-                Retail & E-Commerce
-              </p>
-              <p className="text-gray-600 hover:text-blue-500 cursor-pointer">
-                Information Technology
-              </p>
+              <Link to={'/allProducts'}>
+                <p className="text-gray-600 hover:text-blue-500 cursor-pointer">
+                  Retail & E-Commerce
+                </p>
+              </Link>
             </div>
           </div>
         </div>
