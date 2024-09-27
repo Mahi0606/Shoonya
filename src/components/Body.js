@@ -17,7 +17,7 @@ const sectionVariants = {
 const Body = () => {
   return (
     <div className="px-6 md:px-10 my-10">
-      {/* Animated Popular Products Section */}
+
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -31,7 +31,7 @@ const Body = () => {
         </div>
       </motion.div>
 
-      {/* Products Section */}
+
       <div className="mt-6 px-4 md:px-10">
         <div className="items-container flex flex-wrap gap-5 md:flex-nowrap md:overflow-x-auto scrollbar-hidden">
           {filteredData.map((item, index) => (

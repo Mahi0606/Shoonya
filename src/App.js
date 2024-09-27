@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import appStore from "./utils/appStore";
 import AppLayout from "./components/AppLayout";
 import AllProducts from "./components/AllProducts";
+import Success from "./components/Success";
 
 
 
@@ -20,30 +21,34 @@ function App() {
       children: [
         {
           path: "/",
-          element: <Home />,
+          element: <Home />
         },
         {
           path: "/sign-in",
-          element: <SignIn />,
+          element: <SignIn />
         },
         {
           path: "/sign-up",
-          element: <SignUp />,
+          element: <SignUp />
         },
         {
           path: "/cart",
-          element: <Cart />,
+          element: <Cart />
         },
         {
           path: "/buy-page/:id",
-          element: <BuyPage />,
+          element: <BuyPage />
         },
         {
           path: "/allProducts",
-          element: <AllProducts />,
+          element: <AllProducts />
         }
       ],
     },
+    {
+      path: "/success",
+      element: <Success />
+    }
   ]);
 
   return (

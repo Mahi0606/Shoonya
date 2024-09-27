@@ -60,7 +60,7 @@ const Header = ({ user, handleSignOut }) => {
     <>
       <div
         className={
-          "w-full z-10 h-5 bg-pink-800 flex text-white justify-center items-center"
+          "fixed w-full z-10 h-5 bg-pink-800 flex text-white justify-center items-center"
         }>
         Welcome to Shoonya Natural Foods !!
       </div>
@@ -77,7 +77,7 @@ const Header = ({ user, handleSignOut }) => {
             <input
               type="text"
               placeholder="Search products..."
-              className="border border-gray-300 rounded-md px-4 py-2 w-48 lg:w-56 focus:outline-none focus:ring focus:ring-pink-500 transition duration-200"
+              className="border border-gray-300 rounded-md px-4 py-2 w-40 lg:w-56 focus:outline-none focus:ring focus:ring-pink-500 transition duration-200"
               value={searchTerm}
               onChange={handleSearchChange}
             />
@@ -92,8 +92,8 @@ const Header = ({ user, handleSignOut }) => {
                       key={product.id}
                       className="flex items-center p-3 hover:bg-pink-100 transition duration-200"
                       onClick={() => {
-                        setSearchTerm(""); // Clear the search input
-                        setShowSearchDropdown(false); // Hide the dropdown
+                        setSearchTerm(""); 
+                        setShowSearchDropdown(false); 
                       }}>
                       <img
                         src={

@@ -4,11 +4,14 @@ import { faIndianRupee, faMinusSquare, faPlusSquare, faTrashAlt } from "@fortawe
 import { useSelector } from "react-redux";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../utils/firebase";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import PaymentModal from "./PaymentModal"; // Import the modal component
 
 const Cart = () => {
   const user = useSelector((state) => state.user.user);
   const [cartItems, setCartItems] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -64,6 +67,17 @@ const Cart = () => {
     return cartItems
       .reduce((total, item) => total + item.price * item.quantity, 0)
       .toFixed(2);
+  };
+
+  const handleCheckout = () => {
+    setModalOpen(true); // Open the payment modal
+  };
+
+  const handleConfirmPayment = () => {
+    // Here you would integrate your payment processing logic
+    // For now, let's redirect to a success page
+    setModalOpen(false); // Close the modal
+    navigate("/success"); // Redirect to success page
   };
 
   return (
@@ -124,13 +138,24 @@ const Cart = () => {
                   <FontAwesomeIcon icon={faIndianRupee} /> {calculateTotal()}
                 </span>
               </div>
-              <button className="mt-4 w-full py-2 bg-pink-800 text-white font-semibold rounded-md hover:bg-pink-700">
+              <button
+                className="mt-4 w-full py-2 bg-pink-800 text-white font-semibold rounded-md hover:bg-pink-700"
+                onClick={handleCheckout}
+              >
                 Proceed to Checkout
               </button>
             </div>
           )}
         </div>
       </div>
+
+      {/* Payment Modal */}
+      <PaymentModal
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        total={calculateTotal()}
+        onConfirm={handleConfirmPayment}
+      />
     </div>
   );
 };

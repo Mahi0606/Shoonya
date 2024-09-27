@@ -45,7 +45,7 @@ function AppLayout() {
 
   return (
     <div className="bg-gradient-to-t from-lime-50">
-      <Header fixed1={false} user={user} handleSignOut={handleSignOut} />
+      <Header user={user} handleSignOut={handleSignOut} />
       <Outlet />
       <Footer />
     </div>

@@ -60,6 +60,7 @@ const BuyPage = () => {
 
       // Save the updated cart in Firestore
       await setDoc(cartRef, { items: cartItems });
+      alert("Added to cart.");
       console.log("Cart updated successfully!");
     } catch (error) {
       console.error("Error updating cart:", error);
@@ -109,7 +110,7 @@ const BuyPage = () => {
                 {rupeeSign} {item.price || item.variants?.[0]?.price}
               </span>
             </div>
-            <div className="pt-4 sm:pt-10 pb-4 lg:pb-10 flex items-center gap-14">
+            <div className="pt-4 sm:pt-10 pb-4 lg:pb-10 flex items-center gap-14 select-none">
               <FontAwesomeIcon
                 icon={faMinusSquare}
                 fontSize={40}

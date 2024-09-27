@@ -17,6 +17,7 @@ const AllProducts = () => {
   const minProductPrice = Math.min(...productPrices);
   const maxProductPrice = Math.max(...productPrices);
 
+
   // Update filtered products based on search term and price range
   useEffect(() => {
     const filtered = allProducts.filter((product) => {
@@ -34,12 +35,10 @@ const AllProducts = () => {
     setFilteredProducts(filtered);
   }, [searchTerm, priceRange]);
 
-  // Handle search input change
   const handleSearch = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  // Handle price range change
   const handlePriceChange = (e, type) => {
     const value = parseFloat(e.target.value);
     setPriceRange((prevRange) => {
@@ -69,7 +68,7 @@ const AllProducts = () => {
       </div>
 
       {/* Price Range Filter */}
-      <div className="flex justify-center items-center space-x-6 mb-10">
+      <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6 mb-10 px-4 md:px-0">
         <div className="flex flex-col items-center">
           <label className="font-semibold text-lg text-pink-600">
             Min Price: ₹{priceRange[0]}
@@ -98,47 +97,48 @@ const AllProducts = () => {
         </div>
       </div>
 
-      {/* Products Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
-            <div
-              key={product.id}
-              className="border rounded-lg overflow-hidden shadow-lg transition duration-300 transform hover:scale-105 hover:shadow-2xl bg-white">
-              <img
-                src={
-                  product.images
-                    ? product.images[0]?.src || product.imageUrl
-                    : product.imageUrl
-                }
-                alt={product.title}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-6">
-                <h2 className="font-bold text-xl text-gray-800 truncate">
-                  {product.title}
-                </h2>
-                <p className="text-gray-600 text-sm mt-2 h-16 overflow-hidden">
-                  {product.description ? (
-                    <DecodeDescription description={product.description} />
-                  ) : (
-                    product.body_html && (
-                      <DecodeDescription description={product.body_html} />
-                    )
-                  )}
-                </p>
-                <div className="mt-4 flex items-center justify-between">
-                  <span className="font-bold text-lg text-pink-600">
-                    ₹{product.price || product.variants?.[0]?.price}
-                  </span>
-                  <Link to={`/buy-page/${product.id}`}>
-                    <button className="bg-pink-600 text-white py-2 px-5 rounded-full transition hover:bg-pink-700">
-                      Buy Now
-                    </button>
-                  </Link>
+            <Link to={`/buy-page/${product.id}`}>
+              <div
+                key={product.id}
+                className="border rounded-lg overflow-hidden shadow-lg transition duration-300 transform hover:scale-105 hover:shadow-2xl bg-white">
+                <img
+                  src={
+                    product.images
+                      ? product.images[0]?.src || product.imageUrl
+                      : product.imageUrl
+                  }
+                  alt={product.title}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-6">
+                  <h2 className="font-bold text-xl text-gray-800 truncate">
+                    {product.title}
+                  </h2>
+                  <p className="text-gray-600 text-sm mt-2 h-16 overflow-hidden">
+                    {product.description ? (
+                      <DecodeDescription description={product.description} />
+                    ) : (
+                      product.body_html && (
+                        <DecodeDescription description={product.body_html} />
+                      )
+                    )}
+                  </p>
+                  <div className="mt-4 flex items-center justify-between">
+                    <span className="font-bold text-lg text-pink-600">
+                      ₹{product.price || product.variants?.[0]?.price}
+                    </span>
+                    <Link to={`/buy-page/${product.id}`}>
+                      <button className="bg-pink-600 text-white py-2 px-5 rounded-full transition hover:bg-pink-700">
+                        Buy Now
+                      </button>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))
         ) : (
           <p className="text-center text-gray-500 col-span-full">

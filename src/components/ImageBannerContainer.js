@@ -13,7 +13,7 @@ const ImageBannerContainer = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentBannerIndex((prevIndex) => (prevIndex + 1) % banners.length);
-    }, 3000); // Change the banner every 3 seconds
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [banners.length]);
@@ -21,11 +21,11 @@ const ImageBannerContainer = () => {
   return (
     <div className='relative flex pt-[80px] w-full h-[400px] md:h-[550px] lg:h-[750px] overflow-hidden'>
       <img
-        className='w-full h-full rounded-md transition-opacity duration-1000 ease-in-out'
+        className='w-full h-full object-cover lg:object-fill rounded-md transition-opacity duration-1000 ease-in-out'
         alt='image-banner'
         src={banners[currentBannerIndex][1]}        
       />
-      <div className="absolute pb-20 pl-14 right-0 h-full w-[300px] flex items-center  bg-gradient-to-l from-black opacity-0 hover:opacity-90">
+      <div className="absolute pb-20 pl-14 right-0 h-full w-[200px] lg:w-[300px] flex items-center  bg-gradient-to-l from-black opacity-0 hover:opacity-90">
         <Link to={`/buy-page/${banners[currentBannerIndex][0]}`}>
           <button className='text-white font-semibold py-4 px-5 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105 bg-pink-700'>
             Shop Now
