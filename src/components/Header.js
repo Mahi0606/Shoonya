@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faUser,
   faBagShopping,
-  faUserCircle,
+  faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import shoonya from "../assets/shoonya.png";
+import shoonya from "../assets/shoonya1.png";
 import { Link } from "react-router-dom";
 import { allProducts } from "../utils/mockData";
 
@@ -14,6 +13,7 @@ const Header = ({ user, handleSignOut }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [showSearchDropdown, setShowSearchDropdown] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const userDropdownRef = useRef(null);
   const searchDropdownRef = useRef(null);
@@ -25,12 +25,20 @@ const Header = ({ user, handleSignOut }) => {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-
+    
+    if (value.length === 0) {
+      setShowSearchDropdown(false);
+      return;
+    }
+    
+    setLoading(true);
     const filtered = allProducts.filter((item) =>
       item.title.toLowerCase().includes(value.toLowerCase())
     );
+    
     setFilteredProducts(filtered);
-    setShowSearchDropdown(value.length > 0);
+    setShowSearchDropdown(true);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -58,75 +66,88 @@ const Header = ({ user, handleSignOut }) => {
 
   return (
     <>
-      <div
-        className={
-          "fixed w-full z-10 h-5 bg-pink-800 flex text-white justify-center items-center"
-        }>
-        Welcome to Shoonya Natural Foods !!
-      </div>
-      <div
-        className={
-          "fixed top-5 w-full z-10 flex justify-between items-center bg-white h-14 pr-4 md:pr-6 shadow-md"
-        }>
+      <div className="fixed top-0 w-full z-30 bg-white h-16 flex justify-between items-center px-6 shadow-sm border-b-2 border-gray-300 transition-all duration-300 ease-in-out">
         <Link to="/">
-          <img alt="logo" className="w-28 md:w-32 lg:w-40" src={shoonya} />
+          <img alt="logo" className="w-28" src={shoonya} />
         </Link>
 
-        <ul className="flex space-x-8 md:space-x-8 lg:space-x-14 mr-2 lg:mr-8 items-center">
-          <li className="relative">
+        <div className="relative w-1/2">
+          <div className="flex items-center border border-gray-300 rounded-lg">
             <input
               type="text"
-              placeholder="Search products..."
-              className="border border-gray-300 rounded-md px-4 py-2 w-40 lg:w-56 focus:outline-none focus:ring focus:ring-pink-500 transition duration-200"
+              placeholder="Search..."
+              className="border-none rounded-l-lg px-4 py-2 w-full focus:outline-none"
               value={searchTerm}
               onChange={handleSearchChange}
             />
-            {showSearchDropdown && (
-              <div
-                className="absolute left-0 top-10 w-80 bg-white border border-gray-300 rounded-lg shadow-xl max-h-60 overflow-y-auto p-4 z-50 transition-transform transform scale-y-100 opacity-100"
-                ref={searchDropdownRef}>
-                {filteredProducts.length > 0 ? (
-                  filteredProducts.map((product) => (
-                    <Link
-                      to={`/buy-page/${product.id}`}
-                      key={product.id}
-                      className="flex items-center p-3 hover:bg-pink-100 transition duration-200"
-                      onClick={() => {
-                        setSearchTerm(""); 
-                        setShowSearchDropdown(false); 
-                      }}>
-                      <img
-                        src={
-                          product.images
-                            ? product.images[0].src || product.imageUrl
-                            : product.imageUrl
-                        }
-                        alt={product.title}
-                        className="w-12 h-12 mr-3 rounded"
-                      />
-                      <span className="text-md">{product.title}</span>
-                    </Link>
-                  ))
-                ) : (
-                  <div className="p-3 text-gray-500">No results found</div>
-                )}
-              </div>
-            )}
-          </li>
+            <div className="flex items-center px-3 border-l border-gray-300">
+              <select className="text-sm border-none focus:outline-none">
+                <option>All categories</option>
+                {/* Add other categories if needed */}
+              </select>
+            </div>
+            <button className="bg-gray-800 text-white p-3 rounded-r-lg transition duration-300 ease-in-out hover:bg-gray-700">
+              <FontAwesomeIcon icon={faSearch} />
+            </button>
+          </div>
+
+          {/* Search Dropdown */}
+          {showSearchDropdown && (
+            <div
+              className="absolute left-0 top-full w-full bg-white border border-gray-300 rounded-lg shadow-xl z-40 transition-all duration-300 ease-in-out"
+              ref={searchDropdownRef}>
+              {loading ? (
+                <div className="p-3 text-gray-500 text-center">Loading...</div>
+              ) : filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
+                  <Link
+                    to={`/buy-page/${product.id}`}
+                    key={product.id}
+                    className="flex items-center p-3 hover:bg-gray-100 transition duration-200"
+                    onClick={() => {
+                      setSearchTerm("");
+                      setShowSearchDropdown(false);
+                    }}>
+                    <img
+                      src={
+                        product.images
+                          ? product.images[0].src || product.imageUrl
+                          : product.imageUrl
+                      }
+                      alt={product.title}
+                      className="w-12 h-12 mr-3 rounded"
+                    />
+                    <span className="text-sm">{product.title}</span>
+                  </Link>
+                ))
+              ) : (
+                <div className="p-3 text-gray-500 text-center">
+                  No results found
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Account and Cart */}
+        <ul className="flex space-x-4 items-center">
           {!user ? (
-            <li className="cursor-pointer">
-              <Link to="/sign-in">
-                <FontAwesomeIcon icon={faUser} fontSize={20} />
+            <li>
+              <Link to="/sign-in" className="text-sm text-gray-700">
+                Login / Signup
               </Link>
             </li>
           ) : (
             <li
-              className="relative cursor-pointer"
+              className="relative"
               onClick={toggleUserDropdown}
               ref={userDropdownRef}>
-              <FontAwesomeIcon icon={faUserCircle} fontSize={25} />
+              <span className="text-sm text-gray-700 cursor-pointer flex items-center space-x-1">
+                {/* <FontAwesomeIcon icon={faUser} /> */}
+                <span>My account</span>
+              </span>
               {showUserDropdown && (
-                <div className="absolute z-50 right-0 mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg transition-transform transform scale-y-100 opacity-100">
+                <div className="absolute z-40 right-0 top-full mt-2 w-48 bg-white border border-gray-300 rounded-lg shadow-lg transition-transform duration-300 ease-in-out">
                   <div className="p-4">
                     <p className="font-bold text-lg">{user?.displayName}</p>
                     <p className="text-gray-600 text-sm">{user?.email}</p>
@@ -141,10 +162,40 @@ const Header = ({ user, handleSignOut }) => {
               )}
             </li>
           )}
-          <li className="cursor-pointer">
-            <Link to="/cart">
+          <li>
+            <Link to="/cart" className="text-gray-700">
               <FontAwesomeIcon icon={faBagShopping} fontSize={20} />
             </Link>
+          </li>
+        </ul>
+      </div>
+
+      {/* Navigation Links */}
+      <div className="fixed top-16 w-full z-20 bg-white h-12 flex justify-center items-center shadow-md">
+        <ul className="flex space-x-6 text-gray-700 text-sm">
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/bestsellers">Bestsellers</Link>
+          </li>
+          <li>
+            <Link to="/new-launches">New Launches</Link>
+          </li>
+          <li>
+            <Link to="/snacks">Healthy Yummy Snacking</Link>
+          </li>
+          <li>
+            <Link to="/exotic">Exotic Range</Link>
+          </li>
+          <li>
+            <Link to="/combos">Combos</Link>
+          </li>
+          <li>
+            <Link to="/bulk-orders">Bulk Orders</Link>
+          </li>
+          <li>
+            <Link to="/contact-us">Contact Us</Link>
           </li>
         </ul>
       </div>
