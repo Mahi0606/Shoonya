@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../utils/firebase";
@@ -12,6 +12,7 @@ import LoadingPage from "./LoadingPage";
 function AppLayout() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -21,16 +22,18 @@ function AppLayout() {
         const { uid, email, displayName } = user;
         dispatch(addUser({ uid: uid, email: email, displayName: displayName }));
         setUser(user);
-        // navigate("/");
       } else {
         dispatch(removeUser());
         setUser(null);
-        // navigate("/");
       }
       setLoading(false);
     });
 
-  }, [dispatch, navigate]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
 
   const handleSignOut = () => {
     signOut(auth).then(() => {
